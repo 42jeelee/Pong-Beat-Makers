@@ -1,0 +1,9 @@
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/Pong-Beat-Makers/frontend.git
+[submodule "game"]
+	path = game
+	url = https://github.com/Pong-Beat-Makers/game.git
+[submodule "chatting"]
+	path = chatting
+	url = https://github.com/Pong-Beat-Makers/chatting.git
