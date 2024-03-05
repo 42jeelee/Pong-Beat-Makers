@@ -7,3 +7,6 @@
 [submodule "chatting"]
 	path = chatting
 	url = https://github.com/Pong-Beat-Makers/chatting.git
+[submodule "user-management"]
+	path = user-management
+	url = https://github.com/Pong-Beat-Makers/user-management.git

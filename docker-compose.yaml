@@ -17,3 +17,10 @@ services:
 
   game:
     build: ./game
+    env_file:
+      - ./env/game.env
+
+  user-management:
+    build: ./user-management
+    env_file:
+      - ./env/user-management.env
