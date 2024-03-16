@@ -8,12 +8,49 @@ services:
       - ./nginx/conf.d/:/etc/nginx/conf.d
       - ./frontend:/usr/share/nginx/html
     ports:
-      - 8080:80
+      - 8000:80
+    depends_on:
+      - chatting
+      - game
+      - user-management
+    restart: always
 
   chatting:
     build: ./chatting
     env_file:
       - ./env/chatting.env
+    depends_on:
+      - chatting_db
+    restart: always
+
+  chatting_db:
+    image: "postgres:16.2-alpine3.18"
+    env_file:
+      - ./env/chatting_db.env
+    restart: always
 
   game:
     build: ./game
+    env_file:
+      - ./env/game.env
+    depends_on:
+      - game_db
+    restart: always
+
+  game_db:
+    image: "postgres:16.2-alpine3.18"
+    env_file:
+      - ./env/game_db.env
+    restart: always
+
+  user-management:
+    build: ./user-management
+    env_file:
+      - ./env/user-management.env
+    restart: always
+
+  user-management_db:
+    image: "postgres:16.2-alpine3.18"
+    env_file:
+      - ./env/user-management_db.env
+    restart: always
