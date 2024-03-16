@@ -48,3 +48,9 @@ services:
     env_file:
       - ./env/user-management.env
     restart: always
+
+  user-management_db:
+    image: "postgres:16.2-alpine3.18"
+    env_file:
+      - ./env/user-management_db.env
+    restart: always
