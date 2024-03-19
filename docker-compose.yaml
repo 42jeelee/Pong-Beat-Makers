@@ -2,13 +2,13 @@ version: "3.8"
 
 services:
   nginx:
-    image: "nginx:stable"
+    build: ./nginx
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/conf.d/:/etc/nginx/conf.d
       - ./frontend:/usr/share/nginx/html
     ports:
-      - 8000:80
+      - 443:443
     depends_on:
       - chatting
       - game
@@ -20,13 +20,17 @@ services:
     env_file:
       - ./env/chatting.env
     depends_on:
-      - chatting_db
+      chatting_db:
+        condition: service_healthy
     restart: always
 
   chatting_db:
     image: "postgres:16.2-alpine3.18"
     env_file:
       - ./env/chatting_db.env
+    healthcheck:
+      interval: 5s
+      test: ["CMD", "pg_isready", "-U", "chatting"]
     restart: always
 
   game:
@@ -34,23 +38,33 @@ services:
     env_file:
       - ./env/game.env
     depends_on:
-      - game_db
+      game_db:
+        condition: service_healthy
     restart: always
 
   game_db:
     image: "postgres:16.2-alpine3.18"
     env_file:
       - ./env/game_db.env
+    healthcheck:
+      interval: 5s
+      test: ["CMD", "pg_isready", "-U", "game"]
     restart: always
 
   user-management:
     build: ./user-management
     env_file:
       - ./env/user-management.env
+    depends_on:
+      user-management_db:
+        condition: service_healthy
     restart: always
 
   user-management_db:
     image: "postgres:16.2-alpine3.18"
     env_file:
       - ./env/user-management_db.env
+    healthcheck:
+      interval: 5s
+      test: ["CMD", "pg_isready", "-U", "user-management"]
     restart: always
